@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TMC Teacher Panel</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="teacherPanel" class="dashboard">
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <h1 id="mobileTeacherHeaderTitle">Teacher Panel</h1>
+            <button class="hamburger" id="teacherHamburgerBtn" aria-label="Toggle menu">☰</button>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="teacherSidebar">
+            <h2>Teacher Dashboard</h2>
+            <button class="close-sidebar">×</button>
+            <nav>
+                <button title="Home Dashboard" id="teacherHomeBtn">🏠 Home</button>
+                <button title="Add a new student" id="addStudentBtn">👩‍🎓 Add Student</button>
+                <button title="View students list" id="studentsListBtn">📋 Students List</button>
+                <button title="Assign homework" id="assignHomeworkBtn">📝 Assign Homework</button>
+                <button title="Check homework status" id="homeworkStatusBtn">✅ Homework Status</button>
+                <button title="Record attendance" id="attendanceBtn">📅 Attendance</button>
+                <button title="Assign sessional marks" id="sessionalMarksBtn">📊 Sessional Marks</button>
+                <button title="View analytics" id="teacherAnalyticsBtn">📈 Analytics</button>
+                <button title="Manage classes" id="manageClassesBtn">🏫 Manage Classes</button>
+                <button title="Settings" id="teacherSettingsBtn">⚙️ Settings</button>
+            </nav>
+            <button class="logout-btn" title="Logout" id="teacherLogoutBtn">🚪 Logout</button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1 id="teacherHeaderTitle">Teacher Panel</h1>
+                <div id="teacherLoading" class="loading" style="display: none;">Loading...</div>
+            </header>
+
+            <!-- Home Section -->
+            <section id="teacherHomeSection" class="data-section">
+                <h2>Welcome, <span id="teacherName"></span>!</h2>
+                <div class="stats-grid">
+                    <div class="stat-card"><span>Total Students</span><span id="totalStudents">0</span></div>
+                    <div class="stat-card"><span>Pending Homework</span><span id="pendingHomework">0</span></div>
+                    <div class="stat-card"><span>Submitted Homework</span><span id="submittedHomework">0</span></div>
+                    <div class="stat-card"><span>Next Due Date</span><span id="nextDueDate">N/A</span></div>
+                </div>
+                <div class="daily-tip"><strong>Daily Tip:</strong> <span id="dailyTip"></span></div>
+            </section>
+
+            <!-- Add Student Section -->
+            <section id="addStudentSection" class="form-section" style="display: none;">
+                <h2>Add Student</h2>
+                <button id="addNewStudentBtn" class="form-btn">Add New Student</button>
+                <form id="studentForm" class="form-grid" style="display: none;">
+                    <input type="text" id="studentName" placeholder="Name" required>
+                    <input type="text" id="rollNumber" placeholder="Roll Number" required>
+                    <select id="studentClass" required></select>
+                    <input type="password" id="studentPassword" placeholder="Student Login Password" required>
+                    <button type="button" id="saveStudentBtn" class="form-btn save-btn">Save</button>
+                </form>
+            </section>
+
+            <!-- Students List Section -->
+            <section id="studentsListSection" class="data-section" style="display: none;">
+                <h2>Students List</h2>
+                <div class="filter-bar">
+                    <input type="text" id="studentSearchInput" placeholder="Search by name or roll number">
+                    <select id="studentClassFilter"></select>
+                </div>
+                <table id="studentTable">
+                    <thead><tr><th>Name</th><th>Roll Number</th><th>Class</th><th>Actions</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+                <div class="pagination">
+                    <button id="studentPrevPageBtn">Previous</button>
+                    <span id="studentPageInfo"></span>
+                    <button id="studentNextPageBtn">Next</button>
+                </div>
+            </section>
+
+            <!-- Assign Homework Section -->
+            <section id="assignHomeworkSection" class="form-section" style="display: none;">
+                <h2>Assign Homework</h2>
+                <form id="homeworkForm" class="form-grid">
+                    <input type="text" id="homeworkTitle" placeholder="Title" required>
+                    <textarea id="homeworkDescription" placeholder="Description" required></textarea>
+                    <input type="date" id="homeworkDueDate" required>
+                    <input type="file" id="homeworkFile">
+                    <select id="homeworkTarget" required>
+                        <option value="">Select Target</option>
+                        <option value="all">All Students</option>
+                        <option value="student">Specific Student</option>
+                        <option value="class">Specific Class</option>
+                    </select>
+                    <select id="homeworkTargetSpecific" style="display: none;"></select>
+                    <button type="button" id="saveHomeworkBtn" class="form-btn save-btn">Save</button>
+                </form>
+            </section>
+
+            <!-- Homework Status Section -->
+            <section id="homeworkStatusSection" class="data-section" style="display: none;">
+                <h2>Homework Status</h2>
+                <div class="filter-bar">
+                    <input type="text" id="homeworkSearchInput" placeholder="Search by title">
+                    <select id="homeworkStatusFilter">
+                        <option value="">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Submitted">Submitted</option>
+                    </select>
+                </div>
+                <table id="homeworkTable">
+                    <thead><tr><th>Title</th><th>Target</th><th>Due Date</th><th>Status</th><th>File</th><th>Actions</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+                <div class="pagination">
+                    <button id="homeworkPrevPageBtn">Previous</button>
+                    <span id="homeworkPageInfo"></span>
+                    <button id="homeworkNextPageBtn">Next</button>
+                </div>
+            </section>
+
+            <!-- Attendance Section -->
+            <section id="attendanceSection" class="data-section" style="display: none;">
+                <h2>Record Attendance</h2>
+                <div class="filter-bar">
+                    <select id="attendanceClass" required>
+                        <option value="">Select Class</option>
+                    </select>
+                </div>
+                <table id="attendanceTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Roll Number</th>
+                            <th>Attendance Status</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <button id="saveAttendanceBtn" class="form-btn save-btn" disabled>Save Attendance</button>
+                <h3>Past Attendance</h3>
+                <div class="filter-bar">
+                    <input type="date" id="pastAttendanceDate">
+                    <select id="pastAttendanceClass">
+                        <option value="">Select Class</option>
+                    </select>
+                </div>
+                <table id="pastAttendanceTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Roll Number</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <!-- Sessional Marks Section -->
+            <section id="sessionalMarksSection" class="form-section" style="display: none;">
+                <h2>Sessional Marks</h2>
+                <form id="sessionalMarksForm" class="form-grid">
+                    <select id="marksClass" required>
+                        <option value="">Select Class</option>
+                    </select>
+                    <select id="marksStudent" required>
+                        <option value="">Select Student</option>
+                    </select>
+                    <input type="text" id="marksSubject" placeholder="Subject (e.g., Math)" required>
+                    <select id="marksExamType" required>
+                        <option value="">Select Exam Type</option>
+                        <option value="Midterm">Midterm</option>
+                        <option value="Final">Final</option>
+                        <option value="Quiz">Quiz</option>
+                        <option value="Assignment">Assignment</option>
+                    </select>
+                    <input type="number" id="marksObtained" placeholder="Marks Obtained" min="0" required>
+                    <input type="number" id="marksMax" placeholder="Max Marks" min="1" required>
+                    <input type="date" id="marksDate" required>
+                    <button type="button" id="saveMarksBtn" class="form-btn save-btn">Save</button>
+                </form>
+                <h3>Assigned Marks</h3>
+                <div class="filter-bar">
+                    <input type="text" id="marksSearchInput" placeholder="Search by subject or student">
+                    <select id="marksClassFilter">
+                        <option value="">All Classes</option>
+                    </select>
+                </div>
+                <table id="marksTable">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Class</th>
+                            <th>Subject</th>
+                            <th>Exam Type</th>
+                            <th>Marks</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div class="pagination">
+                    <button id="marksPrevPageBtn">Previous</button>
+                    <span id="marksPageInfo"></span>
+                    <button id="marksNextPageBtn">Next</button>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="teacherAnalyticsSection" class="data-section" style="display: none;">
+                <h2>Analytics</h2>
+                <div class="charts">
+                    <canvas id="homeworkCompletionChart" width="400" height="200"></canvas>
+                    <canvas id="studentWorkloadChart" width="400" height="200"></canvas>
+                    <canvas id="marksDistributionChart" width="400" height="200"></canvas>
+                </div>
+            </section>
+
+            <!-- Manage Classes Section -->
+            <section id="manageClassesSection" class="data-section" style="display: none;">
+                <h2>Manage Classes</h2>
+                <button id="addNewClassBtn" class="form-btn">Add New Class</button>
+                <form id="classForm" class="form-grid" style="display: none;">
+                    <input type="text" id="className" placeholder="Class Name (e.g., 10A)" required>
+                    <button type="button" id="saveClassBtn" class="form-btn save-btn">Save</button>
+                </form>
+                <table id="classTable">
+                    <thead><tr><th>Class Name</th><th>Actions</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="teacherSettingsSection" class="data-section" style="display: none;">
+                <h2>Settings</h2>
+                <div class="settings-options">
+                    <label>Email:</label>
+                    <input type="email" id="settingsEmail" disabled>
+                    <button id="updateAccountBtn" class="form-btn">Update Account</button>
+                    <label>Theme:</label>
+                    <select id="teacherThemeSelect">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                        <option value="system">System</option>
+                    </select>
+                    <label><input type="checkbox" id="homeworkNotifications"> Homework Updates</label>
+                    <label><input type="checkbox" id="studentNotifications"> Student Updates</label>
+                    <button id="exportTeacherDataBtn" class="form-btn">⬇️ Export Data</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="teacherLoginModal" class="modal" style="display: flex;">
+        <div class="modal-content">
+            <span class="close-btn" id="closeTeacherLoginBtn">×</span>
+            <h2>Teacher Login</h2>
+            <form id="teacherLoginForm" class="form-grid">
+                <input type="email" id="teacherLoginEmail" placeholder="Email" required>
+                <input type="password" id="teacherLoginPassword" placeholder="Password" required>
+                <button type="submit" id="teacherLoginBtn" class="form-btn">Login</button>
+                <p>Not registered? <a href="#" id="switchToRegister">Register here</a></p>
+            </form>
+            <div id="teacherLoginError" class="error" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="teacherRegisterModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" id="closeTeacherRegisterBtn">×</span>
+            <h2>Teacher Registration</h2>
+            <form id="teacherRegisterForm" class="form-grid">
+                <input type="email" id="teacherRegisterEmail" placeholder="Email" required>
+                <input type="password" id="teacherRegisterPassword" placeholder="Password" required>
+                <input type="password" id="teacherRegisterConfirmPassword" placeholder="Confirm Password" required>
+                <button type="submit" id="teacherRegisterBtn" class="form-btn">Register</button>
+                <p>Already registered? <a href="#" id="switchToLogin">Login here</a></p>
+            </form>
+            <div id="teacherRegisterError" class="error" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="dataOperations.js"></script>
+    <script type="module" src="uiOperations.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
