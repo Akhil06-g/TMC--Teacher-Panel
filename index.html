@@ -20,6 +20,7 @@
             <h2>Teacher Dashboard</h2>
             <button class="close-sidebar">×</button>
             <nav>
+                <button title="Profile" id="teacherProfileBtn">👤 Profile</button>
                 <button title="Home Dashboard" id="teacherHomeBtn">🏠 Home</button>
                 <button title="Add a new student" id="addStudentBtn">👩‍🎓 Add Student</button>
                 <button title="View students list" id="studentsListBtn">📋 Students List</button>
@@ -40,6 +41,115 @@
                 <h1 id="teacherHeaderTitle">Teacher Panel</h1>
                 <div id="teacherLoading" class="loading" style="display: none;">Loading...</div>
             </header>
+
+            <!-- Profile Section -->
+            <section id="teacherProfileSection" class="data-section" style="display: none;">
+                <h2>Teacher Profile</h2>
+                <div class="profile-details">
+                    <div class="profile-header">
+                        <img id="teacherProfilePic" src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-pic">
+                        <div class="profile-info">
+                            <h3 id="teacherProfileName">Teacher Name</h3>
+                            <p id="teacherProfileEmail">email@example.com</p>
+                            <p id="teacherProfileRole">Role: Teacher</p>
+                        </div>
+                    </div>
+                    <div class="profile-stats">
+                        <span><strong>Classes:</strong> <span id="teacherProfileClasses">0</span></span>
+                        <span><strong>Students:</strong> <span id="teacherProfileStudents">0</span></span>
+                        <span><strong>Homework Assigned:</strong> <span id="teacherProfileHomework">0</span></span>
+                    </div>
+                    <div class="profile-bio">
+                        <h4>Bio</h4>
+                        <p id="teacherProfileBio">No bio provided.</p>
+                    </div>
+                    <div class="profile-contact">
+                        <h4>Contact Information</h4>
+                        <p><strong>Phone:</strong> <span id="teacherProfilePhone">N/A</span></p>
+                        <p><strong>Address:</strong> <span id="teacherProfileAddress">N/A</span></p>
+                    </div>
+                    <div class="profile-subjects">
+                        <h4>Teaching Subjects</h4>
+                        <p id="teacherProfileSubjects">None assigned.</p>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button id="editProfileBtn" class="form-btn">Edit Profile</button>
+                    <button id="viewActivityBtn" class="form-btn">View Activity Log</button>
+                    <button id="manageAuthoritiesBtn" class="form-btn">Manage Authorities</button>
+                </div>
+            </section>
+
+            <!-- Profile Edit Section -->
+            <section id="profileEditSection" class="form-section" style="display: none;">
+                <h2>Edit Profile</h2>
+                <form id="profileForm" class="form-grid">
+                    <input type="text" id="profileName" placeholder="Full Name" required>
+                    <input type="email" id="profileEmail" placeholder="Email" disabled>
+                    <input type="tel" id="profilePhone" placeholder="Phone Number">
+                    <input type="text" id="profileAddress" placeholder="Address">
+                    <input type="text" id="profileSubjects" placeholder="Teaching Subjects (comma-separated)">
+                    <textarea id="profileBio" placeholder="Bio (e.g., Teaching Philosophy)" rows="4"></textarea>
+                    <div class="profile-pic-upload">
+                        <label for="profilePic">Profile Picture</label>
+                        <input type="file" id="profilePic" accept="image/*">
+                        <img id="profilePicPreview" src="https://via.placeholder.com/100" alt="Preview" style="display: none;">
+                    </div>
+                    <button type="button" id="saveProfileBtn" class="form-btn save-btn">Save Profile</button>
+                </form>
+            </section>
+
+            <!-- Activity Log Section -->
+            <section id="recentActivitySection" class="data-section" style="display: none;">
+                <h2>Activity Log</h2>
+                <div class="filter-bar">
+                    <input type="text" id="activitySearchInput" placeholder="Search activities">
+                    <select id="activityFilter">
+                        <option value="">All Activities</option>
+                        <option value="add">Add</option>
+                        <option value="update">Update</option>
+                        <option value="delete">Delete</option>
+                    </select>
+                </div>
+                <ul id="recentActivityList" class="activity-list"></ul>
+            </section>
+
+            <!-- Authorities Management Section -->
+            <section id="authoritiesSection" class="data-section" style="display: none;">
+                <h2>Manage Authorities</h2>
+                <div class="authorities-info">
+                    <p><strong>Current Role:</strong> <span id="currentRole">Teacher</span></p>
+                    <p><strong>Permissions:</strong> <span id="currentPermissions">N/A</span></p>
+                </div>
+                <form id="authoritiesForm" class="form-grid">
+                    <select id="authorityRole" required>
+                        <option value="">Select Role</option>
+                        <option value="admin">Admin (Full Access)</option>
+                        <option value="editor">Editor (Manage Content)</option>
+                        <option value="viewer">Viewer (Read-Only)</option>
+                    </select>
+                    <div class="permissions-checkboxes">
+                        <label><input type="checkbox" id="permManageUsers"> Manage Users</label>
+                        <label><input type="checkbox" id="permManageClasses"> Manage Classes</label>
+                        <label><input type="checkbox" id="permAssignHomework"> Assign Homework</label>
+                        <label><input type="checkbox" id="permRecordAttendance"> Record Attendance</label>
+                        <label><input type="checkbox" id="permAssignMarks"> Assign Marks</label>
+                    </div>
+                    <button type="button" id="saveAuthoritiesBtn" class="form-btn save-btn">Save Authorities</button>
+                </form>
+                <h3>Assigned Authorities</h3>
+                <table id="authoritiesTable">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Role</th>
+                            <th>Permissions</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
 
             <!-- Home Section -->
             <section id="teacherHomeSection" class="data-section">
@@ -264,7 +374,11 @@
         <div class="modal-content">
             <span class="close-btn" id="closeTeacherLoginBtn">×</span>
             <h2>Teacher Login</h2>
-            <form id="teacherLoginForm" class="form-grid">
+            <div id="accountSelection" class="account-selection">
+                <div id="accountCircles" class="account-circles"></div>
+                <button id="addAccountBtn" class="add-account-btn" title="Add new account">+</button>
+            </div>
+            <form id="teacherLoginForm" class="form-grid" style="display: none;">
                 <input type="email" id="teacherLoginEmail" placeholder="Email" required>
                 <input type="password" id="teacherLoginPassword" placeholder="Password" required>
                 <button type="submit" id="teacherLoginBtn" class="form-btn">Login</button>
